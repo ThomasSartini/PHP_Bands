@@ -2,20 +2,20 @@
 
   - [Informazioni sul progetto](#informazioni-sul-progetto)
 
-1. [Analisi](#analisi)
+2. [Analisi](#analisi)
 
 
 
-1. [Implementazione](#implementazione)
+3. [Implementazione](#implementazione)
 
-1. [Test](#test)
+4. [Test](#test)
 
   - [Protocollo di test](#protocollo-di-test)
 
   - [Risultati test](#risultati-test)
 
 
-1. [Conclusioni](#conclusioni)
+5. [Conclusioni](#conclusioni)
 
   - [Sviluppi futuri](#sviluppi-futuri)
 
