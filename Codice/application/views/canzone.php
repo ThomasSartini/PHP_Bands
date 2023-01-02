@@ -18,12 +18,13 @@
         <br>
         <div class="row">
             <div class="col">
-                <form action="<?php echo URL; ?>login/canzone" method="post">
+                <form action="<?php echo URL; ?>login/writeAnnotazione" method="post">
                     <label for="posizione">Posizione:</label><br>
                     <input type="number" id="posizione" name="posizione"><br>
                     <label for="testo">Testo:</label><br>
                     <input type="text" id="testo" name="testo"><br><br>
-                    <input type="submit" value="Aggiungi annotazione">
+                    <input type="submit" value="aggiungiAnnotazione">
+                    <input type="hidden" name="canzoneId" value="<?php echo $_POST["canzoneId"] ?>">
                 </form>
                 <?php
                     Get::CanzoneTable();

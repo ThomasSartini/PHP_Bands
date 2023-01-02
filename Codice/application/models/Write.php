@@ -96,17 +96,16 @@ class Write {
         self::canzoni(self::scaletta());
     }
 
-    public static function annotazione(){
+    private static function annotazione(){
         $conn = Database::connect();
+        $posizione = $_POST['posizione'];
+        $testo = $_POST['testo'];
+        $canzone_id = $_POST['canzone_id'];
+    
         $query = "INSERT INTO annotazione(posizione, testo, canzone_id) VALUES(?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
-
-        $posizione = 12;
-        $testo = "Annotazione di esempio";
-        $canzone_id = 3;
         mysqli_stmt_bind_param($stmt, "isi", $posizione, $testo, $canzone_id);
+        mysqli_stmt_execute($stmt);
     }
-
-
 
 }

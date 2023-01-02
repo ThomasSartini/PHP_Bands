@@ -5,9 +5,17 @@ require_once 'Get.php';
 require_once 'Data.php';
 class Check{
     
+    /*
+    Verifica il login dell'utente.
+    @param $usename: nome utente
+    @param $password: password dell'utente
+    @param $tipo: tipo di utente (amministratore o band)
+    @return true se il login è valido, altrimenti false
+    */
     public static function login($usename, $password, $tipo){
         $user = Filter::string($usename);
         $pass = $password;
+        // seleziona la tabella corretta in base al tipo di utente
         if($tipo){
             $query = "SELECT id FROM administrator where user=? AND password=?"; 
         }else{
@@ -22,6 +30,7 @@ class Check{
         $stmt->close();
         $conn->close();
         $return = false;
+        // Se ci sono risultati, imposta il valore di ritorno a true e inizializza la sessione.
         if($result->num_rows> 0){
             $return = true;
             if(session_status() != 2){
@@ -42,7 +51,9 @@ class Check{
         return $return;
     }
 
-
+    /**
+     * Questo metodo si occupa di gestire le sessioni.
+     */
     public static function session(){
         if(session_status() != 2){
             session_start();

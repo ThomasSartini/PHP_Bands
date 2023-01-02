@@ -4,6 +4,11 @@ require_once 'Database.php';
 
 class Get{
 
+    /**
+     * Questa funzione restituisce l'indirizzo IP dell'utente che ha effettuato la richiesta HTTP.
+     *
+     * @return string l'indirizzo IP dell'utente
+     */
     public static  function ipAddress(){
         if(getenv('HTTP_CLIENT_IP')){
             return getenv('HTTP_CLIENT_IP');
@@ -22,23 +27,43 @@ class Get{
         }
     }
 
+    /**
+     * Questa funzione restituisce la data e l'ora corrente nel formato "Y-m-d H:i:s" e nel fuso orario "Europe/Zurich".
+     *
+     * @return string la data e l'ora correnti nel formato specificato
+     */
     public static  function currentDate(){
         return (new Datetime('now', new DateTimeZone('Europe/Zurich')))->format("Y-m-d H:i:s");
     }
 
 
+    /**
+     * Questa funzione restituisce un array con le informazioni su tutte le canzoni appartenenti al gruppo musicale correntemente autenticato.
+     *
+     * @return array un array con le informazioni su tutte le canzoni del gruppo musicale
+     */
     public static function listSelfCanzoni(){
         $query = "SELECT * FROM canzone WHERE band_id=".$_SESSION["id"]; 
         $result = Database::query($query);
         return Data::cleanAllData($result);
     }
 
+     /**
+     * Questa funzione restituisce un array con gli ID di tutte le canzoni appartenenti al gruppo musicale correntemente autenticato.
+     *
+     * @return array un array con gli ID di tutte le canzoni del gruppo musicale
+     */
     public static function listSelfCanzoniId(){
         $query = "SELECT id FROM canzone WHERE band_id=".$_SESSION["id"]; 
         $result = Database::query($query);
         return Data::cleanData($result, "id");
     }
 
+    /**
+     * Questa funzione stampa una tabella HTML con le informazioni su tutte le canzoni passate come parametro.
+     *
+     * @param array $data un array con le informazioni su tutte le canzoni da visualizzare nella tabella
+     */
     public static function canzoniTable($data){
         echo "<table class='table table-striped'>";
         echo "<tr>";
@@ -59,6 +84,11 @@ class Get{
         echo "</table>";
     }
 
+    /**
+     * Questa funzione restituisce un array con tutti i generi musicali presenti nel database.
+     *
+     * @return array un array con tutti i generi musicali presenti nel database
+     */
     public static function generi(){
         if(Check::session()){
             $query = "SELECT genere from genere";
@@ -67,6 +97,11 @@ class Get{
         }
     }
 
+     /**
+     * Questa funzione restituisce un array con tutte le tipologie di evento presenti nel database.
+     *
+     * @return array un array con tutte le tipologie di evento presenti nel database
+     */
     public static function tipologie(){
         if(Check::session()){
             $query = "SELECT tipologia from tipologia";
@@ -75,6 +110,11 @@ class Get{
         }
     }
 
+     /**
+     * Questa funzione restituisce un array con tutti gli strumenti presenti nel database.
+     *
+     * @return array un array con tutti gli strumenti presenti nel database
+     */
     public static function strumenti(){
         if(Check::session()){
             $query = "SELECT strumento from strumento";
@@ -83,6 +123,11 @@ class Get{
         }
     }
 
+         /**
+     * Questa funzione restituisce il testo di una canzone a partire dall'ID della canzone e dall'ID del gruppo musicale correntemente autenticato.
+     *
+     * @return string il testo della canzone
+     */
     private static function canzone(){
         $conn = Database::connect();
        // $idCanzone =  Filter::string($_POST["idCanzone"]);
@@ -93,6 +138,9 @@ class Get{
     }
 
 
+    /**
+     * Questa funzione stampa una tabella HTML con le informazioni sulla canzone selezionata.
+     */
     public static function canzoneTable(){
         $conn = Database::connect();
         $query = "SELECT testo FROM canzone WHERE id =?";
@@ -122,12 +170,22 @@ class Get{
         }
     }
 
+    /**
+     * Questa funzione restituisce tutte le scalette create dal gruppo musicale correntemente loggato.
+     *
+     * @return array un array di array, dove ogni elemento rappresenta una scaletta con i suoi campi
+     */
     public static function listSelfScalette(){
         $query = "SELECT * FROM scaletta WHERE band_id=".$_SESSION["id"]; 
         $result = Database::query($query);
         return Data::cleanAllData($result);
     }
 
+    /**
+     * Questa funzione stampa una tabella HTML contenente le scalette create dal gruppo musicale correntemente loggato.
+     * La tabella ha una colonna per il nome della scaletta, una per la data, una per l'ora di inizio e una per l'ora di fine.
+     * C'è anche un pulsante "Dettagli" per ogni riga della tabella, che permette di visualizzare ulteriori informazioni sulla scaletta.
+     */
     public static function scaletteTable(){
         $data = self::listSelfScalette();
         echo "<table class='table table-striped'>";
@@ -151,6 +209,11 @@ class Get{
         echo "</table>";
     }
 
+    /**
+     * Questa funzione restituisce tutte le canzoni presenti nella scaletta specificata tramite l'ID della scaletta.
+     *
+     * @return array un array di array, dove ogni elemento rappresenta una canzone con i suoi campi
+     */
     public static function listCanzoniScaletta(){
         $conn = Database::connect();
         $query = "SELECT * FROM canzone WHERE id IN(SELECT canzone_id FROM scaletta_canzone WHERE scaletta_id=?)"; 
@@ -164,6 +227,12 @@ class Get{
         return Data::cleanAllData($result);
     }
 
+
+    /**
+     * Questa funzione restituisce il nome della scaletta specificata tramite l'ID della scaletta.
+     *
+     * @return string il nome della scaletta
+     */
     public static function scalettaNome(){
         $conn = Database::connect();
         $query = "SELECT nome FROM scaletta WHERE id=?"; 
@@ -175,6 +244,11 @@ class Get{
         return Data::cleanSingleData($result, "nome");
     }
 
+     /**
+     * Questa funzione restituisce il titolo della canzone specificata tramite l'ID della canzone.
+     *
+     * @return string il titolo della canzone
+     */
     public static function canzoneTitolo(){
         $conn = Database::connect();
         $query = "SELECT titolo FROM canzone WHERE id=?"; 
@@ -186,6 +260,10 @@ class Get{
         return Data::cleanSingleData($result, "titolo");
     }
 
+    
+    /**
+     * Questa funzione stampa in una tabella tutte le band presenti nel database.
+     */
     public static function bandsTable(){
         $query = "SELECT user FROM band";
         $result = Database::query($query);
