@@ -18,9 +18,9 @@
     <br>
     <div class="row">
         <div class="col">
-            <?php
-                Get::CanzoniTable(Get::listCanzoniScaletta());
-            ?>
+            <form action="<?php echo URL; ?>login/canzone" method="POST">
+                <?php Get::CanzoniTable(Get::listCanzoniScaletta()); ?>
+            </form>
         </div>
     </div>
 </div>

@@ -94,31 +94,33 @@ class Get{
 
 
     public static function canzoneTable(){
-        $data = self::canzone();
-        $canzone = (explode(" ",$data[0]));
-        $parole =0;
-        $start= true;
-        echo "<table class='table table-striped'>";
-        echo "<tr>";
-        for($i =0;  $i <= 4;$i++){
-            echo "<th></th>";
+        $conn = Database::connect();
+        $query = "SELECT testo FROM canzone WHERE id =?";
+        $stmt = $conn->prepare($query);
+        $id = $_POST["canzoneId"];
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = mysqli_fetch_assoc($result);
+        $testo_canzone = $row['testo'];
+        $righe = explode("\n", $testo_canzone);
+        foreach ($righe as $i => $riga) {
+            echo ($i+1) . ". ";
+        
+            $query = "SELECT testo FROM annotazione WHERE canzone_id =? AND posizione = $i";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $annotazioni = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        
+            foreach ($annotazioni as $annotazione) {
+                echo "<span>" . $annotazione['testo'] . "</span> ";
+            }
+        
+            echo $riga . "\n";
         }
-
-        for ($i = 0; $i < count($canzone); $i++) {
-            if ($i % 5 == 0) {
-              echo '<tr>';
-            }
-            echo '<td>' . $canzone[$i] . '</td>';
-            if ($i % 5 == 4) {
-              echo '</tr>';
-              for($j =0;  $j <= 4;$j++){
-                echo "<th></th>";
-                }
-            }
-          }
-        echo "</table>";
     }
-
 
     public static function listSelfScalette(){
         $query = "SELECT * FROM scaletta WHERE band_id=".$_SESSION["id"]; 
@@ -171,6 +173,17 @@ class Get{
         $stmt->execute();
         $result = $stmt->get_result();
         return Data::cleanSingleData($result, "nome");
+    }
+
+    public static function canzoneTitolo(){
+        $conn = Database::connect();
+        $query = "SELECT titolo FROM canzone WHERE id=?"; 
+        $stmt = $conn->prepare($query);
+        $id = $_POST["canzoneId"];
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return Data::cleanSingleData($result, "titolo");
     }
 
 }

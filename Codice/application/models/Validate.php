@@ -76,7 +76,7 @@ class Validate{
     }
 
     private static function genere(){
-        if(self::existence($_POST["genere"]) && in_array($_POST["genere"], Get::generi())){
+        if(self::existence($_POST["genere"]) && (in_array($_POST["genere"], Get::generi()) || $_POST["genere"] == "tutti")){
             return true;
         }else{
             $_SESSION["errorMessage"] = "genere non valido";
@@ -86,7 +86,7 @@ class Validate{
     }
 
     private static function tipologia(){
-        if(self::existence($_POST["tipologia"]) && in_array($_POST["tipologia"], Get::tipologie())){
+        if(self::existence($_POST["tipologia"]) && (in_array($_POST["tipologia"], Get::tipologie()) || $_POST["tipologia"] == "tutte")){
             return true;
         }else{
             $_SESSION["errorMessage"] = "tipologia non valida";
@@ -174,8 +174,14 @@ class Validate{
 
     public static function scaletta(){
         self::setDefaultMessage();
+        $base = true;
+        if(isset($_POST["genere"])){
+            $base = $base && self::genere() && self::tipologia();
+        }else{
+            $base = $base && self::canzoni();
+        }
         return (  
-            self::canzoni() && 
+            $base &&
             self::titolo() &&
             self::data() &&
             self::oraInizio() &&

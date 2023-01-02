@@ -93,7 +93,7 @@ class Login {
 
     public function writeScaletta(){
         if(Check::session()){
-            if(Validate::scaletta()){
+            if(!(isset($_POST["automatico"]) || isset($_POST["manuale"])) && Validate::scaletta()){
                 $_SESSION["errorMessage"] = false;
                 Write::scalettaCompleta();
                 $this->scalette();

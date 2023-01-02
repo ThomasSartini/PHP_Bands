@@ -1,6 +1,5 @@
 
 <body>
-
     <div class="container" style="margin-top:100px">
         <div class="row">
             <div class="col">
@@ -23,9 +22,9 @@
         <br>
         <div class="row">
             <div class="col">
-                <?php
-                    Get::CanzoniTable(Get::listSelfCanzoni());
-                ?>
+                <form action="<?php echo URL; ?>login/canzone" method="POST">
+                    <?php Get::CanzoniTable(Get::listSelfCanzoni()); ?>
+                </form>
             </div>
         </div>
     </div>

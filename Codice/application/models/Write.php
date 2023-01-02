@@ -61,11 +61,30 @@ class Write {
     }
 
     private static function canzoni($id){
-        if(isset($_POST["canzoni"])){ 
-            $conn = Database::connect();
+        $conn = Database::connect();
+        if(isset($_POST["genere"])){
+            $query = "SELECT id FROM canzone WHERE genere LIKE ? AND tipologia LIKE ? AND band_id=?";
+            $stmt = $conn->prepare($query);
+            $genere = ($_POST["genere"] == "tutti")? "%": Filter::string($_POST["genere"]);
+            $tipologia = ($_POST["tipologia"] == "tutte")? "%": Filter::string($_POST["tipologia"]);
+
+            $stmt->bind_param("ssi", $genere, $tipologia, $_SESSION["id"]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $canzoni = Data::cleanData($result, "id");
+            $stmt->close();
+
+            foreach($canzoni as $c){
+                $query = "INSERT INTO scaletta_canzone(canzone_id, scaletta_id) VALUES (?, ?);";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("ii", $c, $id);
+                $stmt->execute();
+            }
+        }else{
+            
             foreach($_POST["canzoni"] as $canzone){
-                $query = "INSERT INTO scaletta_canzone(canzone_id, scaletta_id) VALUES (?, ?);"; 
-                $stmt = $conn->prepare($query); 
+                $query = "INSERT INTO scaletta_canzone(canzone_id, scaletta_id) VALUES (?, ?);";
+                $stmt = $conn->prepare($query);
                 $c = Filter::string($canzone);
                 $stmt->bind_param("ii", $c, $id);
                 $stmt->execute();
@@ -75,6 +94,17 @@ class Write {
 
     public static function scalettaCompleta(){
         self::canzoni(self::scaletta());
+    }
+
+    public static function annotazione(){
+        $conn = Database::connect();
+        $query = "INSERT INTO annotazione(posizione, testo, canzone_id) VALUES(?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $query);
+
+        $posizione = 12;
+        $testo = "Annotazione di esempio";
+        $canzone_id = 3;
+        mysqli_stmt_bind_param($stmt, "isi", $posizione, $testo, $canzone_id);
     }
 
 
