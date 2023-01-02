@@ -33,6 +33,12 @@ class Get{
         return Data::cleanAllData($result);
     }
 
+    public static function listSelfCanzoniId(){
+        $query = "SELECT id FROM canzone WHERE bandId=".$_SESSION["id"]; 
+        $result = Database::query($query);
+        return Data::cleanData($result, "id");
+    }
+
     public static function canzoniTable(){
         $data = self::listSelfCanzoni();
         echo "<table class='table table-striped'>";
@@ -137,4 +143,5 @@ class Get{
         }
         echo "</table>";
     }
+
 }

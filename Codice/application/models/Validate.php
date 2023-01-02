@@ -127,4 +127,27 @@ class Validate{
             self::strumenti()
         );
     }
+
+    private static function canzoni(){
+        if(isset($_POST["canzoni"])){
+            $strumenti = Get::listSelfCanzoniId(); 
+            foreach($_POST["canzoni"] as $s ){
+                if(!in_array($s, $strumenti)){
+                    $_SESSION["errorMessage"] = "Canzoni non valide";
+                    return false;
+                }
+            }
+            return true;
+        }else{
+            return true;
+        }
+    }
+
+    public static function scaletta(){
+        self::setDefaultMessage();
+        return (  
+            self::canzoni() && 
+            self::titolo()
+        );
+    }
 }

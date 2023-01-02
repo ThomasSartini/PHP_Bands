@@ -42,8 +42,36 @@ class Write {
         }
     }
 
-    public static function all(){
+    public static function canzoneCompleta(){
         self::strumenti(self::canzone());
+    }
+
+
+    private static function scaletta(){
+        $conn = Database::connect();
+        $query = "INSERT INTO scaletta(nome, band_id) VALUES(?, ?);"; 
+        $stmt = $conn->prepare($query); 
+        $titolo = Filter::string($_POST["titolo"]);
+        $stmt->bind_param("si", $titolo, $_SESSION["id"]);
+        $stmt->execute();
+        return $conn->insert_id;
+    }
+
+    private static function canzoni($id){
+        if(isset($_POST["canzoni"])){ 
+            $conn = Database::connect();
+            foreach($_POST["canzoni"] as $canzone){
+                $query = "INSERT INTO scaletta_canzone(canzone_id, scaletta_id) VALUES (?, ?);"; 
+                $stmt = $conn->prepare($query); 
+                $c = Filter::string($canzone);
+                $stmt->bind_param("ii", $c, $id);
+                $stmt->execute();
+            }
+        }
+    }
+
+    public static function scalettaCompleta(){
+        self::canzoni(self::scaletta());
     }
 
 

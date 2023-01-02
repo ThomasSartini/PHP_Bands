@@ -8,7 +8,7 @@
                 </form>
             </div>
             <div class="col">
-                <form action="<?php echo URL; ?>login/addCanzone" method="POST">
+                <form action="<?php echo URL; ?>login/addScaletta" method="POST">
                     <button type="submit" class="float-right">Nuova</button>
                 </form>
             </div>

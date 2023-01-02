@@ -49,6 +49,15 @@ class data{
         }
     }
 
+    public static function printCompleteCheckBox($list, $type, $field) {
+        foreach($list as $l){
+            $name = $type."[]";
+            echo "<input type='checkbox' name='$name' value='".$l['id']."'>";
+            echo "<label style='margin-left:5px'>".$l[$field]."</label>";
+            echo "<br>";
+        }
+    }
+
 
 
 

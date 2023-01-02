@@ -47,14 +47,34 @@ class Login {
         }
     }
 
+    public function addScaletta(){
+        if(Check::session()){
+            require 'application/views/templates/header.php';
+            require 'application/views/addScaletta.php';
+        }
+    }
+
     public function writeCanzone(){
         if(Check::session()){
             if(Validate::canzone()){
                 $_SESSION["errorMessage"] = false;
-                Write::all();
+                Write::canzoneCompleta();
                 $this->canzoni();
             }else{
                 $this->addCanzone();
+            }
+            
+        }
+    }
+
+    public function writeScaletta(){
+        if(Check::session()){
+            if(Validate::scaletta()){
+                $_SESSION["errorMessage"] = false;
+                Write::scalettaCompleta();
+                $this->scalette();
+            }else{
+                $this->addScaletta();
             }
             
         }

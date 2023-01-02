@@ -58,10 +58,10 @@
                         <?php echo Data::getSelect(Get::tipologie()); ?>
                     </select><br>
 
-                    <label for="ltipologia">Strumenti:</label><br>
+                    <label >Strumenti:</label><br>
                     <?php Data::printCheckBox(Get::strumenti(), "strumenti")?>
 
-                    <input type="submit" value="submit">
+                    <input type="submit" value="Crea">
                 </form> 
             </div>
         </div>
