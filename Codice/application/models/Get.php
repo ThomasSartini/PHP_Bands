@@ -28,19 +28,18 @@ class Get{
 
 
     public static function listSelfCanzoni(){
-        $query = "SELECT * FROM canzone WHERE bandId=".$_SESSION["id"]; 
+        $query = "SELECT * FROM canzone WHERE band_id=".$_SESSION["id"]; 
         $result = Database::query($query);
         return Data::cleanAllData($result);
     }
 
     public static function listSelfCanzoniId(){
-        $query = "SELECT id FROM canzone WHERE bandId=".$_SESSION["id"]; 
+        $query = "SELECT id FROM canzone WHERE band_id=".$_SESSION["id"]; 
         $result = Database::query($query);
         return Data::cleanData($result, "id");
     }
 
-    public static function canzoniTable(){
-        $data = self::listSelfCanzoni();
+    public static function canzoniTable($data){
         echo "<table class='table table-striped'>";
         echo "<tr>";
         echo "<th>Titolo</th>";
@@ -88,7 +87,7 @@ class Get{
         $conn = Database::connect();
        // $idCanzone =  Filter::string($_POST["idCanzone"]);
         $idCanzone= 1;
-        $query = "SELECT testo FROM canzone where bandId = ". $_SESSION["id"] ." and id =".$idCanzone .";"; 
+        $query = "SELECT testo FROM canzone where band_id = ". $_SESSION["id"] ." and id =".$idCanzone .";"; 
         $result = Database::query($query);
         return  Data::cleanData($result, "testo");
     }
@@ -132,16 +131,46 @@ class Get{
         echo "<table class='table table-striped'>";
         echo "<tr>";
         echo "<th>Nome</th>";
+        echo "<th>Data</th>";
+        echo "<th>Ora di inizio</th>";
+        echo "<th>Ora di fine</th>";
         echo "<th class='float-right'>Dettagli</th>";
         echo "</tr>";
 
         foreach($data as $sca){
             echo "<tr>";
             echo "<td>".$sca["nome"]."</td>";
+            echo "<td>".$sca["data"]."</td>";
+            echo "<td>".$sca["ora_inizio"]."</td>";
+            echo "<td>".$sca["ora_fine"]."</td>";
             echo "<td><button type='submit' name='scalettaId' value='".$sca["id"]."' class='float-right'>Dettagli</button></td>";
             echo "</tr>";
         }
         echo "</table>";
+    }
+
+    public static function listCanzoniScaletta(){
+        $conn = Database::connect();
+        $query = "SELECT * FROM canzone WHERE id IN(SELECT canzone_id FROM scaletta_canzone WHERE scaletta_id=?)"; 
+        $stmt = $conn->prepare($query);
+        $id = $_POST["scalettaId"];
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        $conn->close();
+        return Data::cleanAllData($result);
+    }
+
+    public static function scalettaNome(){
+        $conn = Database::connect();
+        $query = "SELECT nome FROM scaletta WHERE id=?"; 
+        $stmt = $conn->prepare($query);
+        $id = $_POST["scalettaId"];
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return Data::cleanSingleData($result, "nome");
     }
 
 }

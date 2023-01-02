@@ -26,6 +26,15 @@
                 <form action="<?php echo URL; ?>login/writeScaletta" method="POST">
                     <label>Titolo</label><br>
                     <input type="text" name="titolo">
+                    <br><br>
+                    <label>Data</label><br>
+                    <input type='date' name='data'>
+                    <br><br>
+                    <label>Ora inizio (formato HH:MM:SS)</label><br>
+                    <input type='text' name='inizio'>
+                    <br><br>
+                    <label>Ora fine (formato HH:MM:SS)</label><br>
+                    <input type='text' name='fine'>
                     <br><br><br>
                     <b>Scegli le canzoni da aggiungere alla scaletta</b>
                     <br><br>

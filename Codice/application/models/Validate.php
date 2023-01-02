@@ -143,11 +143,73 @@ class Validate{
         }
     }
 
+    private static function data(){
+        if(self::existence($_POST["data"])){
+            return true;
+        }else{
+            $_SESSION["errorMessage"] = "Data non valida";
+            return false;
+        }
+    }
+
+    private static function oraInizio(){
+        if(self::existence($_POST["inizio"])){
+            return true;
+        }else{
+            $_SESSION["errorMessage"] = "Ora di inizio non valida";
+            return false;
+        }
+    }
+
+    private static function oraFine(){
+        if(self::existence($_POST["fine"])){
+            return true;
+        }else{
+            $_SESSION["errorMessage"] = "Ora di fine non valida";
+            return false;
+        }
+    }
+
+
+
     public static function scaletta(){
         self::setDefaultMessage();
         return (  
             self::canzoni() && 
-            self::titolo()
+            self::titolo() &&
+            self::data() &&
+            self::oraInizio() &&
+            self::oraFine()
         );
+    }
+
+    public static function canzoneId(){
+        if(isset($_POST["canzoneId"])){
+            $conn = Database::connect();
+            $query = "SELECT * FROM canzone WHERE id=? AND band_id=?"; 
+            $stmt = $conn->prepare($query);
+            $id = $_POST["canzoneId"];
+            $stmt->bind_param("ii", $id, $_SESSION["id"]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->num_rows > 0;
+        }else{
+            return false;
+        }
+    }
+
+    public static function scalettaId(){
+        if(isset($_POST["scalettaId"])){
+            $conn = Database::connect();
+            $query = "SELECT * FROM scaletta WHERE id=? AND band_id=?"; 
+            $stmt = $conn->prepare($query);
+            $id = $_POST["scalettaId"];
+            $stmt->bind_param("ii", $id, $_SESSION["id"]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->num_rows > 0;
+        }else{
+            return false;
+        }
     }
 }

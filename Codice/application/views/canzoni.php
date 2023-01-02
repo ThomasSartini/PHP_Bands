@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col">
                 <?php
-                    Get::CanzoniTable();
+                    Get::CanzoniTable(Get::listSelfCanzoni());
                 ?>
             </div>
         </div>

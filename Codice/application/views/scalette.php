@@ -22,9 +22,11 @@
         <br>
         <div class="row">
             <div class="col">
-                <?php
-                    Get::scaletteTable();
-                ?>
+                <form action="<?php echo URL; ?>login/scaletta" method="POST">
+                    <?php
+                        Get::scaletteTable();
+                    ?>
+                </form>
             </div>
         </div>
     </div>

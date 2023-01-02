@@ -38,8 +38,8 @@ create table canzone(
 	bpm int(3) not null,
 	genere VARCHAR(25),
     tipologia VARCHAR(25),
-    bandId INT,
-    FOREIGN KEY(bandId) REFERENCES band(Id),
+    band_id INT,
+    FOREIGN KEY(band_id) REFERENCES band(Id),
 	FOREIGN KEY(genere) REFERENCES genere(genere),
     FOREIGN KEY(tipologia) REFERENCES tipologia(tipologia)
 );

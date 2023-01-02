@@ -22,7 +22,7 @@ class Write {
     private static function canzone(){
         $data = self::readData();
         $conn = Database::connect();
-        $query = "INSERT INTO canzone(titolo, autore, anno, descrizione, audio, testo, album, bpm, genere, tipologia, bandId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; 
+        $query = "INSERT INTO canzone(titolo, autore, anno, descrizione, audio, testo, album, bpm, genere, tipologia, band_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"; 
         $stmt = $conn->prepare($query); 
         $stmt->bind_param("ssissssissi", $data["titolo"], $data["autore"], $data["anno"],$data["descrizione"], $data["audio"], $data["testo"], $data["album"], $data["bpm"],$data["genere"], $data["tipologia"], $_SESSION["id"]);
         $stmt->execute();
@@ -49,10 +49,13 @@ class Write {
 
     private static function scaletta(){
         $conn = Database::connect();
-        $query = "INSERT INTO scaletta(nome, band_id) VALUES(?, ?);"; 
+        $query = "INSERT INTO scaletta(nome, band_id, data, ora_inizio, ora_fine) VALUES(?, ?, ?, ?, ?);"; 
         $stmt = $conn->prepare($query); 
         $titolo = Filter::string($_POST["titolo"]);
-        $stmt->bind_param("si", $titolo, $_SESSION["id"]);
+        $date = Filter::string($_POST["data"]);
+        $inizio = Filter::string($_POST["inizio"]);
+        $fine = Filter::string($_POST["fine"]);
+        $stmt->bind_param("sisss", $titolo, $_SESSION["id"], $date, $inizio, $fine);
         $stmt->execute();
         return $conn->insert_id;
     }

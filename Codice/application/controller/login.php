@@ -54,6 +54,30 @@ class Login {
         }
     }
 
+    public function canzone(){
+        if(Check::session()){
+            if(Validate::canzoneId()){
+                require 'application/views/templates/header.php';
+                require 'application/views/canzone.php';
+            }else{
+                $this->canzoni();
+            }
+        }
+    }
+
+
+    public function scaletta(){
+        if(Check::session()){
+            if(Validate::scalettaId()){
+                require 'application/views/templates/header.php';
+                require 'application/views/scaletta.php';
+            }else{
+                $this->scalette();
+            }
+        }
+    }
+
+
     public function writeCanzone(){
         if(Check::session()){
             if(Validate::canzone()){
