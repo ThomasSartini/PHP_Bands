@@ -19,4 +19,7 @@
 
 #### Sito:
 - [Sito](http://bettelini.internet-box.ch:8083/)
+Dati per login
+Username: Ale
+Password: 123
 
