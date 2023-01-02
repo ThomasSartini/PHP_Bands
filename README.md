@@ -15,4 +15,4 @@
 #### Mandato:
 - [Mandato](/Documenti/Qdc/Gestionale_Band.pdf)	
 #### Struttura:
-- [Documentazione](/Documenti/Documentazione PHP Bands.pdf)
+- [Documentazione](/Documenti)
