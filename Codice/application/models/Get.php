@@ -186,4 +186,21 @@ class Get{
         return Data::cleanSingleData($result, "titolo");
     }
 
+    public static function bandsTable(){
+        $query = "SELECT user FROM band";
+        $result = Database::query($query);
+        $bands = Data::cleanData($result, "user");
+        echo "<table class='table table-striped'>";
+        echo "<tr>";
+        echo "<th>Nome</th>";
+        echo "</tr>";
+
+        foreach($bands as $b){
+            echo "<tr>";
+            echo "<td>".$b."</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    }
+
 }

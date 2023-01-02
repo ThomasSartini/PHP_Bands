@@ -27,6 +27,11 @@ class Check{
             if(session_status() != 2){
                 session_start();
                 $_SESSION['user'] = $user;
+                if($tipo){
+                    $_SESSION["admin"] = true;
+                }else{
+                    $_SESSION["admin"] = false;
+                }
                 $_SESSION["id"] = Data::cleanSingleData($result, "id");
                 $date = (new Datetime(Get::currentDate()))->format('Ydm');
                 $ip = Get::ipAddress();
@@ -54,13 +59,6 @@ class Check{
         header("Location:http://localhost:8080/bands/login/");
         exit();
         return false;
-    }
-
-
-    public static function role($role){
-        if(self::session()){
-           
-        }
     }
     
 }

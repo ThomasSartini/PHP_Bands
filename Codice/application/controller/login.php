@@ -106,8 +106,11 @@ class Login {
 
     public function logout(){
         if(Check::session()){
-            session_start();
+            if(session_status() != 2){
+                session_start();
+            }
             session_destroy();
+            require 'application/views/templates/header.php';
             require 'application/views/login.php';
         }
     }
